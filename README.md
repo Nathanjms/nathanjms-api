@@ -5,11 +5,12 @@
 *Coming Soon*
 ### Features include:
 
-A logged in user can access the Movies api, where they can:
-- Add movies to watch
-- Mark movies as watched
+A logged in user can access the Movies api, which can:
+- Retrieve list of movies belonging to the user's group
+- Add movies to the user's group's watch list 
+- Mark movies as 'seen'
 - See list of movies on watchlist and movies that have been watched
 - ~~See top IMDB Movies~~ (Removed for now)
-- Random movie selector (Now implemented!)
+- Coming Soon: Add Ratings to watcvhed movies!
 
-Backend will be hosted on Heroku once set up.
+Backend will be hosted on Heroku once set up with the front end, and will replace the current node.js setup.
