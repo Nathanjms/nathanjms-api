@@ -21,9 +21,9 @@ Route::post('login', [AuthController::class, 'login']);
 
 // Protected Routes
 Route::group(['middleware' => ['auth:sanctum']], function() {
-    Route::get('movies/group', [MovieController::class, 'getGroupMovies']);
+    Route::get('movies/{groupId}/group', [MovieController::class, 'getGroupMovies']);
     Route::post('movies/user-info', [MovieController::class, 'getUserInfo']);
-    Route::post('movies/add', [MovieController::class, 'store']);
+    Route::post('movies/{groupId}/add', [MovieController::class, 'store']);
     Route::put('movies/mark-as-seen/{id}', [MovieController::class, 'markMovieAsSeen']);
     Route::post('logout', [AuthController::class, 'logout']);
 }); 

@@ -22,7 +22,7 @@ class MovieFactory extends Factory
     public function definition()
     {
         return [
-            'title' => $this->faker->realText(20),
+            'title' => $this->faker->catchPhrase,
             'movie_group_id' => 1,
             'added_by' => 1,
             'seen' => false
