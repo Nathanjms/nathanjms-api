@@ -95,9 +95,17 @@ class MovieController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function markMovieAsSeen(Request $request, $id)
+    public function markMovieAsSeen(Request $request, $movieId)
     {
-        //
+        $movie = new Movie;
+        if (!$movie->isMovieInUsersGroup($request->user()->id, $movieId)) {
+            return response(['message' => 'Movie is not in the user\'s group'], Response::HTTP_UNAUTHORIZED);
+        }
+
+        Movie::find($movieId)
+            ->update(['seen' => true]);
+
+        return response(['status' => 'success', 'message' => 'Movie updated successfully'], Response::HTTP_CREATED);
     }
 
 }
