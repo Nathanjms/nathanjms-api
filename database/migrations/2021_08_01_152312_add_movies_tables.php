@@ -29,7 +29,7 @@ class AddMoviesTables extends Migration
             $table->text('title');
             $table->foreignId('movie_group_id')->constrained('movie_groups');
             $table->foreignId('added_by')->constrained('users');
-            $table->boolean('seen');
+            $table->boolean('seen')->default(false);
             $table->integer('rating')->nullable();
             $table->timestamps();
         });
