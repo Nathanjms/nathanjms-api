@@ -25,12 +25,14 @@ class AuthController extends Controller
             'password' => bcrypt($fields['password'])
         ]);
 
-        $token = $user->CreateToken('myapptoken')->plainTextToken;
+        $token = $user->CreateToken('appToken')->plainTextToken;
 
         $response = [
             'user' => $user,
-            'token' => $token,
-            'expiry' => Carbon::now()->addMinutes(60 * 24 * env('TOKEN_EXPIRATION_DAYS'))->unix(),
+            'token' => [
+                'value' => $token,
+                'expiration' => Carbon::now()->addMinutes(60 * 24 * env('TOKEN_EXPIRATION_DAYS'))->unix()
+            ]
         ];
 
         return response($response, Response::HTTP_CREATED);
@@ -45,11 +47,16 @@ class AuthController extends Controller
 
         // check email
         $user = User::where('email', $fields['email'])->first();
+        if (!$user) {
+            return response([
+                'message' => 'Invalid Email'
+            ], Response::HTTP_UNAUTHORIZED);
+        }
 
         // Check password
-        if (!$user || !Hash::check($fields['password'], $user->password)) {
+        if (!Hash::check($fields['password'], $user->password)) {
             return response([
-                'message' => 'Bad Credentials'
+                'message' => 'Invalid Password'
             ], Response::HTTP_UNAUTHORIZED);
         }
 
@@ -57,8 +64,10 @@ class AuthController extends Controller
 
         $response = [
             'user' => $user,
-            'token' => $token,
-            'expiry' => Carbon::now()->addMinutes(60 * 24 * env('TOKEN_EXPIRATION_DAYS'))->unix(),
+            'token' => [
+                'value' => $token,
+                'expiration' => Carbon::now()->addMinutes(60 * 24 * env('TOKEN_EXPIRATION_DAYS'))->unix()
+            ]
         ];
 
         return response($response, Response::HTTP_CREATED);
