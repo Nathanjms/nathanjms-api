@@ -28,6 +28,7 @@ class AuthController extends Controller
         $token = $user->CreateToken('appToken')->plainTextToken;
 
         $response = [
+            'success' => true,
             'user' => $user,
             'token' => [
                 'value' => $token,
@@ -47,22 +48,18 @@ class AuthController extends Controller
 
         // check email
         $user = User::where('email', $fields['email'])->first();
-        if (!$user) {
-            return response([
-                'message' => 'Invalid Email'
-            ], Response::HTTP_UNAUTHORIZED);
-        }
 
         // Check password
-        if (!Hash::check($fields['password'], $user->password)) {
+        if (!$user || !Hash::check($fields['password'], $user->password)) {
             return response([
-                'message' => 'Invalid Password'
+                'message' => 'Invalid Username or Password'
             ], Response::HTTP_UNAUTHORIZED);
         }
 
         $token = $user->CreateToken('appToken')->plainTextToken;
 
         $response = [
+            'success' => true,
             'user' => $user,
             'token' => [
                 'value' => $token,
