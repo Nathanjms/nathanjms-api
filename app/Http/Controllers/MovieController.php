@@ -55,10 +55,13 @@ class MovieController extends Controller
         $groupMovies = $movie
             ->select('*')
             ->isInGroup($groupId)
-            ->orderBy(isset($input['sortBy']) ? $input['sortBy'] : 'id')
-            ->simplePaginate(10);
+            ->orderBy(isset($input['sortBy']) ? $input['sortBy'] : 'id');
 
-        return $groupMovies;
+        if (isset($input['isSeen'])) {
+            $groupMovies->isSeen((bool) $input['isSeen']);
+        };
+        
+        return $groupMovies->simplePaginate(isset($input['perPage']) ? $input['perPage'] : 10);
     }
 
     /**

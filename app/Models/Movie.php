@@ -58,4 +58,12 @@ class Movie extends Model
     {
         return $query->where('movie_group_id', $movieGroupId);
     }
+
+    /**
+     * @return void
+     */
+    public function scopeIsSeen($query, bool $isSeen)
+    {
+        return $query->where('seen', $isSeen);
+    }
 }

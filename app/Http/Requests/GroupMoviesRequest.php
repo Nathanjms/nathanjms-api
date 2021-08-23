@@ -25,7 +25,9 @@ class GroupMoviesRequest extends FormRequest
     public function rules()
     {
         return [
-            'sortBy' => ['sometimes', Rule::in(['title', 'id', 'created_at'])]
+            'sortBy' => ['sometimes', Rule::in(['title', 'id', 'created_at'])],
+            'perPage' => 'sometimes|integer|min:1|max:200',
+            'isSeen' => 'sometimes|boolean'
         ];
     }
 }
