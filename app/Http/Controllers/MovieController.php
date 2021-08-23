@@ -61,7 +61,7 @@ class MovieController extends Controller
             $groupMovies->isSeen((bool) $input['isSeen']);
         };
         
-        return $groupMovies->simplePaginate(isset($input['perPage']) ? $input['perPage'] : 10);
+        return $groupMovies->simplePaginate(isset($input['perPage']) ? $input['perPage'] : 10)->appends($input);
     }
 
     /**
