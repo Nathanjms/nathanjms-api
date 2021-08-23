@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\GroupMoviesRequest;
 use App\Models\Movie;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -42,23 +43,25 @@ class MovieController extends Controller
      * @param int $groupId
      * @return \Illuminate\Http\Response
      */
-    public function getGroupMovies(Request $request, $groupId)
+    public function getGroupMovies(GroupMoviesRequest $request, int $groupId)
     {
         $movie = new Movie;
         if (!$movie->isUserInGroup($request->user()->id, $groupId)) {
             return response(['message' => 'User is not in group'], Response::HTTP_UNAUTHORIZED);
         };
+
+        $input = $request->validated();
+
+        $groupMovies = $movie
+            ->select('*')
+            ->isInGroup($groupId)
+            ->orderBy(isset($input['sortBy']) ? $input['sortBy'] : 'id');
+
+        if (isset($input['isSeen'])) {
+            $groupMovies->isSeen((bool) $input['isSeen']);
+        };
         
-        $groupMovies = Movie::select('*')
-            ->from('movies')
-            ->where('movie_group_id', '=', $groupId)
-            ->get();
-
-        if (!$groupMovies) {
-            return response(['message' => 'No User found with that ID'], 500);
-        }
-
-        return response($groupMovies);
+        return $groupMovies->simplePaginate(isset($input['perPage']) ? $input['perPage'] : 10);
     }
 
     /**
@@ -110,5 +113,4 @@ class MovieController extends Controller
 
         return response(['status' => 'success', 'message' => 'Movie updated successfully'], Response::HTTP_CREATED);
     }
-
 }

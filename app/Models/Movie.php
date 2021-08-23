@@ -50,4 +50,20 @@ class Movie extends Model
         }
         return $this->isUserInGroup($userId, $movieGroupId);
     }
+
+    /**
+     * @return void
+     */
+    public function scopeIsInGroup($query, $movieGroupId)
+    {
+        return $query->where('movie_group_id', $movieGroupId);
+    }
+
+    /**
+     * @return void
+     */
+    public function scopeIsSeen($query, bool $isSeen)
+    {
+        return $query->where('seen', $isSeen);
+    }
 }
