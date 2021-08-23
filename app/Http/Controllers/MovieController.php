@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\GroupMoviesRequest;
 use App\Models\Movie;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
