@@ -81,14 +81,14 @@ class MovieController extends Controller
             'title' => 'required|string|max:255'
         ]);
 
-        Movie::create([
+        $id = $movie->create([
             'title' => ucfirst($request->title),
             'movie_group_id' => $groupId,
             'seen' => false,
             'added_by' => $request->user()->id,
-        ]);
+        ])->id;
 
-        return response(['status' => 'Success', 'message' => 'Movie created successfully'], Response::HTTP_CREATED);
+        return response(['status' => 'Success', 'message' => 'Movie created successfully', 'id' => $id], Response::HTTP_CREATED);
     }
 
     /**
