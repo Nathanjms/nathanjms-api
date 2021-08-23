@@ -79,7 +79,7 @@ class MovieController extends Controller
         ]);
 
         Movie::create([
-            'title' => $request->title,
+            'title' => ucfirst($request->title),
             'movie_group_id' => $groupId,
             'seen' => false,
             'added_by' => $request->user()->id,
