@@ -6,6 +6,7 @@ use App\Http\Requests\GroupMoviesRequest;
 use App\Models\Movie;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Validation\Rule;
 
 class MovieController extends Controller
 {
@@ -60,7 +61,7 @@ class MovieController extends Controller
         if (isset($input['isSeen'])) {
             $groupMovies->isSeen((bool) $input['isSeen']);
         };
-        
+
         return $groupMovies->simplePaginate(isset($input['perPage']) ? $input['perPage'] : 10)->appends($input);
     }
 
@@ -95,7 +96,6 @@ class MovieController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
     public function markMovieAsSeen(Request $request)
@@ -108,8 +108,31 @@ class MovieController extends Controller
             return response(['message' => 'Movie is not in the user\'s group'], Response::HTTP_UNAUTHORIZED);
         }
 
-        Movie::find($input['movieId'])
+        $movie->find($input['movieId'])
             ->update(['seen' => true]);
+
+        return response(['status' => 'success', 'message' => 'Movie updated successfully'], Response::HTTP_CREATED);
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function rateMovie(Request $request)
+    {
+        $input = $request->validate([
+            'movieId' => 'required|exists:movies,id',
+            'rating' => ['required', Rule::in([1, 2, 3, 4, 5])]
+        ]);
+        $movie = new Movie;
+        if (!$movie->isMovieInUsersGroup($request->user()->id, $input['movieId'])) {
+            return response(['message' => 'Movie is not in the user\'s group'], Response::HTTP_UNAUTHORIZED);
+        }
+
+        $movie->find($input['movieId'])
+            ->update(['rating' => $input['rating']]);
 
         return response(['status' => 'success', 'message' => 'Movie updated successfully'], Response::HTTP_CREATED);
     }

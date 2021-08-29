@@ -25,5 +25,6 @@ Route::group(['middleware' => ['auth:sanctum']], function() {
     Route::post('movies/user-info', [MovieController::class, 'getUserInfo']);
     Route::post('movies/{groupId}/add', [MovieController::class, 'store']);
     Route::put('movies/mark-as-seen', [MovieController::class, 'markMovieAsSeen']);
+    Route::put('movies/rate', [MovieController::class, 'rateMovie']);
     Route::post('logout', [AuthController::class, 'logout']);
 }); 
