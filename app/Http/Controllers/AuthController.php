@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ResetPasswordRequest;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -32,7 +33,7 @@ class AuthController extends Controller
             'user' => $user,
             'token' => [
                 'value' => $token,
-                'expiration' => Carbon::now()->addMinutes(60 * 24 * env('TOKEN_EXPIRATION_DAYS'))->unix()
+                'expiration' => now()->addMinutes(60 * 24 * env('TOKEN_EXPIRATION_DAYS'))->unix()
             ]
         ];
 
@@ -63,7 +64,7 @@ class AuthController extends Controller
             'user' => $user,
             'token' => [
                 'value' => $token,
-                'expiration' => Carbon::now()->addMinutes(60 * 24 * env('TOKEN_EXPIRATION_DAYS'))->unix()
+                'expiration' => now()->addMinutes(60 * 24 * env('TOKEN_EXPIRATION_DAYS'))->unix()
             ]
         ];
 
@@ -79,5 +80,32 @@ class AuthController extends Controller
         return response([
             'message' => 'Logged Out'
         ], Response::HTTP_OK);
+    }
+
+    public function resetPassword(ResetPasswordRequest $request)
+    {
+        $fields = $request->validated();
+
+        $user = User::where('email', $fields['email'])->firstOrFail();
+        
+        // Check new password isn't the same as old.
+        if (Hash::check($fields['password'], $user->password)) {
+            return response([
+                'message' => 'Cannot reset to same password'
+            ], Response::HTTP_UNPROCESSABLE_ENTITY);
+        }
+
+        if ($user->tokens) {
+            // Delete all previous tokens
+            foreach ($user->tokens as $token) {
+                $token->delete();
+            }
+        }
+
+        // Update password & save
+        $user->password = bcrypt($fields['password']);
+        $user->save();
+
+        return response(['success' => true], Response::HTTP_ACCEPTED);
     }
 }
