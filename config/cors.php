@@ -19,7 +19,7 @@ return [
 
     'allowed_methods' => ['*'],
 
-    'allowed_origins' => ['*.nathanjms.co.uk/*'],
+    'allowed_origins' => ['*.nathanjms.co.uk/*', 'localhost:3000/*'],
 
     'allowed_origins_patterns' => [],
 
