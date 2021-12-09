@@ -37,10 +37,12 @@ services:
     image: nginx:alpine
     container_name: webserver
     restart: unless-stopped
-    # tty: true
+    tty: true
     ports:
       - "80:80"
-      - "443:443"
+    volumes:
+      - ./:/var/www
+      - ./nginx/conf.d/:/etc/nginx/conf.d/
     networks:
       - app-network
 
