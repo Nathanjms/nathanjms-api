@@ -4,7 +4,7 @@ services:
   #Postgresql Service
   db:
     image: postgres
-    container_name: db
+    container_name: nathanjms-db
     restart: unless-stopped
     environment:
       POSTGRES_PASSWORD: dev
@@ -28,6 +28,8 @@ services:
     environment:
       SERVICE_NAME: app
       SERVICE_TAGS: dev
+    volumes:
+      - ./:/var/www
     working_dir: /var/www
     networks:
       - app-network
