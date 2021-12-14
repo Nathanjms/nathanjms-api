@@ -14,7 +14,7 @@ services:
     ports:
       - '54320:5432'
     networks:
-      - app-network
+      - nj-web
 
   #PHP Service
   app:
@@ -35,7 +35,7 @@ services:
       - ./:/var/www
     working_dir: /var/www
     networks:
-      - app-network
+      - nj-web
 
   #Nginx Service
   webserver:
@@ -49,9 +49,9 @@ services:
       - ./:/var/www
       - ./nginx/conf.d/:/etc/nginx/conf.d/
     networks:
-      - app-network
+      - nj-web
 
 #Docker Networks
 networks:
-  app-network:
+  nj-web:
     driver: bridge
