@@ -19,6 +19,9 @@ services:
   #PHP Service
   app:
     build:
+      args:
+        user: www
+        uid: 1000
       context: .
       dockerfile: Dockerfile
     image: digitalocean.com/php

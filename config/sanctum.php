@@ -30,7 +30,7 @@ return [
     |
     */
 
-    'expiration' =>  60 * 24 * env('TOKEN_EXPIRATION_DAYS'),
+    'expiration' =>  60 * 24 * intval(env('TOKEN_EXPIRATION_DAYS')),
 
     /*
     |--------------------------------------------------------------------------
