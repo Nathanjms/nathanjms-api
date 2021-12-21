@@ -2,7 +2,7 @@ version: '3.7'
 services:
 
   #Postgresql Service
-  db:
+  nj-db:
     image: postgres
     container_name: nathanjms-db
     restart: unless-stopped
@@ -17,7 +17,7 @@ services:
       - nj-web
 
   #PHP Service
-  app:
+  nj-api:
     build:
       args:
         user: www
@@ -25,12 +25,9 @@ services:
       context: .
       dockerfile: Dockerfile
     image: digitalocean.com/php
-    container_name: app
+    container_name: nj-api
     restart: unless-stopped
     tty: true
-    environment:
-      SERVICE_NAME: app
-      SERVICE_TAGS: dev
     volumes:
       - ./:/var/www
     working_dir: /var/www
