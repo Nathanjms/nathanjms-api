@@ -10,9 +10,9 @@ services:
       POSTGRES_PASSWORD: dev
       POSTGRES_DB: nathanjms_api
     volumes:
-      - ./postgres-data:/var/lib/postgresql/data
+      - ./postgres/data:/var/lib/postgresql/data
     ports:
-      - '54320:5432'
+      - '5432:5432'
     networks:
       - nj-web
 
