@@ -33,7 +33,7 @@ class AuthController extends Controller
             'user' => $user,
             'token' => [
                 'value' => $token,
-                'expiration' => now()->addMinutes(60 * 24 * env('TOKEN_EXPIRATION_DAYS'))->unix()
+                'expiration' => now()->addMinutes(60 * 24 * (int) env('TOKEN_EXPIRATION_DAYS', 31))->unix()
             ]
         ];
 
@@ -64,7 +64,7 @@ class AuthController extends Controller
             'user' => $user,
             'token' => [
                 'value' => $token,
-                'expiration' => now()->addMinutes(60 * 24 * env('TOKEN_EXPIRATION_DAYS'))->unix()
+                'expiration' => now()->addMinutes(60 * 24 * (int) env('TOKEN_EXPIRATION_DAYS', 31))->unix()
             ]
         ];
 

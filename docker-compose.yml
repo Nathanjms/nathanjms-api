@@ -10,24 +10,24 @@ services:
       POSTGRES_PASSWORD: dev
       POSTGRES_DB: nathanjms_api
     volumes:
-      - ./postgres-data:/var/lib/postgresql/data
+      - ./postgres/data:/var/lib/postgresql/data
     ports:
-      - '54320:5432'
+      - '5432:5432'
     networks:
       - networkjms
 
   #PHP Service
   nj-api:
     build:
+      args:
+        user: www
+        uid: 1000
       context: .
       dockerfile: Dockerfile
     image: digitalocean.com/php
     container_name: nj-api
     restart: unless-stopped
     tty: true
-    environment:
-      SERVICE_NAME: app
-      SERVICE_TAGS: dev
     volumes:
       - ./:/var/www
     working_dir: /var/www
@@ -42,7 +42,6 @@ services:
     tty: true
     ports:
       - "80:80"
-      - "443:443"
     volumes:
       - ./:/var/www
       - ./nginx/conf.d/:/etc/nginx/conf.d/
