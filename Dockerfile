@@ -24,7 +24,8 @@ RUN apt-get update && apt-get install -y \
     git \
     curl \
     libzip-dev \ 
-    libpq-dev
+    libpq-dev \
+    iputils-ping
 
 # Clear cache
 RUN apt-get clean && rm -rf /var/lib/apt/lists/*

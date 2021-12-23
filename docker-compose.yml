@@ -4,7 +4,7 @@ services:
   #Postgresql Service
   nj-db:
     image: postgres
-    container_name: nathanjms-db
+    container_name: nj-db
     restart: unless-stopped
     environment:
       POSTGRES_PASSWORD: dev
@@ -14,7 +14,7 @@ services:
     ports:
       - '5432:5432'
     networks:
-      - nj-web
+      - networkjms
 
   #PHP Service
   nj-api:
@@ -32,12 +32,12 @@ services:
       - ./:/var/www
     working_dir: /var/www
     networks:
-      - nj-web
+      - networkjms
 
   #Nginx Service
-  webserver:
+  nj-api-nginx:
     image: nginx:alpine
-    container_name: webserver
+    container_name: nj-api-nginx
     restart: unless-stopped
     tty: true
     ports:
@@ -46,9 +46,9 @@ services:
       - ./:/var/www
       - ./nginx/conf.d/:/etc/nginx/conf.d/
     networks:
-      - nj-web
+      - networkjms
 
 #Docker Networks
 networks:
-  nj-web:
+  networkjms:
     driver: bridge
